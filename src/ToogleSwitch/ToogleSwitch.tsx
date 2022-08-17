@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Switch } from '@headlessui/react';
 
 export interface ToogleSwitchStylesProps {
-  root: string;
-  label: string;
+  root?: string;
+  label?: string;
 }
 
 export interface ToggleSwitchProps
@@ -12,17 +12,26 @@ export interface ToggleSwitchProps
     HTMLInputElement
   > {
   label?: string;
-  looks?: string;
+  styles?: ToogleSwitchStylesProps;
 }
 
 export const ToogleSwitch: React.FC<ToggleSwitchProps> = props => {
+  const styles = (style?: ToogleSwitchStylesProps) => {
+    return {
+      root: `${'inline-flex items-center ' + style?.root}`,
+      label: `mr-4 font-bold ${style?.label}`,
+    };
+  };
+
   const [enabled, setEnabled] = useState(false);
 
   return (
     <Switch.Group>
-      <div className={`flex items-center ${props.looks}`}>
+      <div className={styles(props.styles).root}>
         {props.label && (
-          <Switch.Label className="mr-4">{props.label}</Switch.Label>
+          <Switch.Label className={styles(props.styles).label}>
+            {props.label}
+          </Switch.Label>
         )}
         <Switch
           checked={enabled}
